@@ -76,7 +76,7 @@ function gioca() {
         statoVincitaa.innerHTML="GIOCANDO";
     } 
     // Verifico che l'utente non abbia vinto e proseguo
-    if(numeriGiàCliccati.length-1<(quadratiTotali - numeroBombe)){
+    if(numeriGiàCliccati.length+1<(quadratiTotali - numeroBombe)){
         if(!numeriGiàCliccati.includes(numeroQuadrato) && giocoFinito === false){
             // Vedo se il numero è una bomba oppure un numero normale 
             if(vettoreBombe.includes(numeroQuadrato)){
@@ -95,6 +95,8 @@ function gioca() {
             }
         }
     }else{
+        this.classList.add("azzurro");
+        numeriGiàCliccati.push(numeroQuadrato); 
         statoVincitaa.innerHTML="HAI VINTO";
         avvisoASchermo.innerHTML="HAI VINTO";
         avvisoASchermo.classList.add("d-block");
