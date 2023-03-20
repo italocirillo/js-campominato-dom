@@ -18,11 +18,19 @@ bottonePlay.addEventListener("click", bottoneCliccato);
  * @returns {Element} quadrato      //Ritorna il quadrato e lo inserisce nella griglia
  */
 function creaGriglie(numeroQuadrati, griglia){
+    // Genero bombe
+    const numeroBombe=16;
+    generaBombe(numeroBombe,numeroQuadrati);
+    
+    // Genero quadrari
     for(let i=0;i<numeroQuadrati;i++){
+        console.clear();
         const quadrato = document.createElement("div");
         quadrato.classList.add("col");
+        // Regolo altezza e larghezza quadrati
         quadrato.style.width = `calc(100% / ${Math.sqrt(numeroQuadrati)})`;
         quadrato.style.height = `calc(100% / ${Math.sqrt(numeroQuadrati)})`;
+        // Aggiungo il numero del quadrato
         quadrato.innerHTML = `<span>${i+1}</span>`;
         griglia.append(quadrato);
         quadrato.addEventListener("click",quadratoCliccato);
@@ -44,4 +52,24 @@ function quadratoCliccato() {
     const numeroQuadrato = parseInt(this.querySelector("span").textContent);
     this.classList.toggle("azzurro");
     console.log(numeroQuadrato);
+}
+
+// Funzione che genera numeri casuali
+/**
+ * Description
+ * @param {number} numeriDaGenerare     Quanti numeri devi generare
+ * @param {number} rangeDiNumeri        Da che numero fino a che numero vuoi generare
+ * @returns {vettore} vettoreNumeri     Restituisce il vettore riempito da i numeri casuali che ti servono
+ */
+function generaBombe(numeriDaGenerare,rangeDiNumeri){
+    const vettoreNumeri = [];
+    let numeroCasuale = 0;
+    // Riempo il vettore fino ad arrivare al range 
+    while(vettoreNumeri.length<numeriDaGenerare){
+        numeroCasuale = Math.floor(Math.random() * (rangeDiNumeri - 1 + 1) + 1);
+        if(!vettoreNumeri.includes(numeroCasuale)){
+            vettoreNumeri.push(numeroCasuale);
+        }
+    }
+   return vettoreNumeri;
 }

@@ -59,6 +59,9 @@ main{
     color: white;
     overflow-y: auto;
 }
+main h2{
+    text-transform: uppercase;
+} 
 .container{
     height: 100%;
     display: flex;
@@ -67,7 +70,7 @@ main{
 .quadrato-grande{
     display: flex;
     flex-wrap: wrap;
-    align-content: flex-start;
+    align-content: center;
     width: 40vw;
     height: 40vw;
     margin: 0 auto;
