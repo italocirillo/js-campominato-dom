@@ -3,9 +3,17 @@ const quadratoGrande = document.querySelector(".quadrato-grande");
 const bottonePlay = document.querySelector(".play");
 // Bottone play cliccato
 bottonePlay.addEventListener("click", bottoneCliccato);
-// Vettore con numeri bombe
+// Variabili Globali
+const numeroBombe = 16;
 const vettoreBombe = [];
-
+const numeriGiàCliccati = [];
+let quadratiTotali = 0;
+let giocoFinito=false;
+// Elementi html
+const quadratoCliccato=document.getElementById("quadrato-cliccato");
+const punteggio=document.getElementById("punteggio");
+const statoVincitaa=document.getElementById("stato-vincita");
+const avvisoASchermo=document.querySelector(".avviso-a-schermo");
 
 
 ///////////////////////////
@@ -18,9 +26,8 @@ const vettoreBombe = [];
  * @param {Element} griglia         //Griglia in cui inserire i quadrati
  * @returns {Element} quadrato      //Ritorna il quadrato e lo inserisce nella griglia
  */
-function creaGriglie(numeroQuadrati, griglia){
+function creaGriglie(numeroQuadrati, griglia, numeroBombe){
     // Genero bombe
-    const numeroBombe=16;
     generaBombe(numeroBombe,numeroQuadrati);
     
     // Genero quadrari
@@ -35,7 +42,7 @@ function creaGriglie(numeroQuadrati, griglia){
         // Aggiungo il numero del quadrato
         quadrato.innerHTML = `<span>${i+1}</span>`;
         griglia.append(quadrato);
-        quadrato.addEventListener("click",quadratoCliccato);
+        quadrato.addEventListener("click",gioca);
     }
     return griglia;
 }
@@ -44,20 +51,56 @@ function creaGriglie(numeroQuadrati, griglia){
 function bottoneCliccato() {
     // Pulisco la griglia
     quadratoGrande.innerHTML="";
+    numeriGiàCliccati.length=0;
+    giocoFinito=false;
+    quadratoCliccato.innerHTML=0;
+    punteggio.innerHTML=0;
+    statoVincitaa.innerHTML="Inizio";
+    avvisoASchermo.classList.remove("d-block");
     const selettoreDifficolta = document.getElementById("selettore-difficolta");
     const quantitaQuadrati = parseInt(selettoreDifficolta.value);
-    creaGriglie(quantitaQuadrati,quadratoGrande);
+    quadratiTotali = quantitaQuadrati;
+    creaGriglie(quantitaQuadrati,quadratoGrande,numeroBombe);
 }
 
 // Funzione cella quadrato cliccata
-function quadratoCliccato() {
+function gioca() {
+    const quadrati = document.querySelectorAll(".col");
     const numeroQuadrato = parseInt(this.querySelector("span").textContent);
-    if(vettoreBombe.includes(numeroQuadrato)){
-        this.classList.toggle("rosso");
+    // OUTPUT
+    // Stampo il punteggio
+    punteggio.innerHTML = numeriGiàCliccati.length+1;
+    // Stampo il numero del quadrato cliccato
+    if(giocoFinito === false){
+        quadratoCliccato.innerHTML = numeroQuadrato;
+        statoVincitaa.innerHTML="GIOCANDO";
+    } 
+    // Verifico che l'utente non abbia vinto e proseguo
+    if(numeriGiàCliccati.length-1<(quadratiTotali - numeroBombe)){
+        if(!numeriGiàCliccati.includes(numeroQuadrato) && giocoFinito === false){
+            // Vedo se il numero è una bomba oppure un numero normale 
+            if(vettoreBombe.includes(numeroQuadrato)){
+                this.classList.add("rosso");
+                for(let i=0;i<vettoreBombe.length;i++){
+                    quadrati[vettoreBombe[i]-1].classList.add("rosso");
+                    giocoFinito = true;
+                }
+                statoVincitaa.innerHTML="HAI PERSO";
+                avvisoASchermo.innerHTML="HAI PERSO";
+                avvisoASchermo.classList.add("d-block");
+                avvisoASchermo.classList.add("rosso");
+            }else{
+                this.classList.add("azzurro");
+                numeriGiàCliccati.push(numeroQuadrato); 
+            }
+        }
     }else{
-        this.classList.toggle("azzurro");
+        statoVincitaa.innerHTML="HAI VINTO";
+        avvisoASchermo.innerHTML="HAI VINTO";
+        avvisoASchermo.classList.add("d-block");
+        avvisoASchermo.classList.add("verde");
+        giocoFinito = true;
     }
-    console.log(numeroQuadrato);
 }
 
 // Funzione che genera numeri casuali

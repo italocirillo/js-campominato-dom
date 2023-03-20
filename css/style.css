@@ -17,6 +17,15 @@ body{
     display: flex;
     flex-direction: column;
 }
+.avviso-a-schermo{
+    position: absolute;
+    z-index: 100;
+    font-size: 5rem;
+    font-weight: 900;
+    right: 50%;
+    transform: translateX(50%);
+    display: none;
+}
 /* HEADER */
 header{
     width: 100%;
@@ -66,6 +75,7 @@ main h2{
     height: 100%;
     display: flex;
     align-items: center;
+    position: relative;
 }
 .quadrato-grande{
     display: flex;
@@ -92,12 +102,20 @@ main h2{
 .rosso{
     background-color: darkred;
 }
-
+.d-block{
+    display: block;
+}
+.verde{
+    color: darkcyan;
+}
 /* FOOTER */
 footer{
     padding-left: 1em;
     background-color: whitesmoke;
     flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 footer span{
     font-weight: 600;
@@ -112,4 +130,12 @@ footer a{
 }
 footer a:hover{
     transform: scale(1.1);
+}
+.informazioni{
+    display: flex;
+    gap: 2em;
+    padding-right: 2em;
+}
+.informazioni span{
+    display: inline;
 }
